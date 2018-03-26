@@ -6,7 +6,7 @@ let Engine = Matter.Engine,
   World = Matter.World,
   Bodies = Matter.Bodies
 
-const canvasHeight = 600
+const canvasHeight = 800
 const canvasWidth = 800
 
 // create an engine
@@ -15,21 +15,39 @@ const engine = Engine.create()
 // create a renderer
 const render = Render.create({
   element: document.body,
-  engine: engine
+  engine: engine,
+  options: {
+    height: canvasHeight,
+    width: canvasWidth
+  }
 })
-console.log(render)
-// create two boxes and a ground
 
-const boxA = Bodies.rectangle(400, 200, 80, 80)
-const boxB = Bodies.rectangle(450, 50, 80, 80)
-const ground = Bodies.rectangle(400, 610, 800, 60, {isStatic: true})
-let w = 20
-const leftWall = Bodies.rectangle(w / 2, canvasHeight / 2, w, canvasHeight, {isStatic: true})
-const rightWall = Bodies.rectangle(canvasWidth - w / 2, canvasHeight / 2, w, canvasHeight, {isStatic: true})
+// Ground
+let groundW = 20
+const ground = Bodies.rectangle(
+  canvasWidth / 2,
+  canvasHeight - groundW / 2,
+  canvasWidth, groundW,
+  {isStatic: true}
+)
 
-// add all of the bodies to the world
+// Walls
+let wallW = 20
+const leftWall = Bodies.rectangle(wallW / 2, canvasHeight / 2, wallW, canvasHeight, {isStatic: true})
+const rightWall = Bodies.rectangle(canvasWidth - wallW / 2, canvasHeight / 2, wallW, canvasHeight, {isStatic: true})
 
-World.add(engine.world, [boxA, boxB, ground, leftWall, rightWall])
+// Spikes
+const step = 80
+const spikeH = 60
+const spikeW = 10
+const spikes = []
+
+for (let i = step; i < canvasWidth; i += step) {
+  console.log(i)
+  spikes.push(Bodies.rectangle(i - spikeW / 2, canvasHeight - spikeH / 2 - groundW, spikeW, spikeH, {isStatic: true}))
+}
+
+World.add(engine.world, [ground, leftWall, rightWall, ...spikes])
 
 // run the engine
 Engine.run(engine)
@@ -58,4 +76,4 @@ const addObstacles = () => {
   }
 }
 
-addObstacles()
+// addObstacles()
