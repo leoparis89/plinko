@@ -1,30 +1,38 @@
-import { Engine } from 'matter-js'
-import myP5 from './services/myP5'
-import { Box } from './shapes/Box'
+import * as Matter from 'matter-js'
 
-let engine, world, ground, boxes = []
+// module aliases
+let Engine = Matter.Engine,
+  Render = Matter.Render,
+  World = Matter.World,
+  Bodies = Matter.Bodies
 
-myP5.setup = () => {
-  myP5.createCanvas(640, 480)
-  engine = Engine.create()
-  world = engine.world
-  Engine.run(engine)
-  ground = new Box(320, 480, 640, 50, world, {
-    isStatic: true, angle: myP5.PI / 4
-  })
-}
+const canvasHeight = 600
+const canvasWidth = 800
 
-myP5.draw = () => {
-  myP5.background(52)
-  ground.show()
-  for (let box of boxes) {
-    box.show()
-  }
-}
+// create an engine
+const engine = Engine.create()
 
-window.addEventListener('mousedown', ({x, y}) => {
-  boxes.push(new Box(x, y, myP5.random(10, 40), myP5.random(10, 40), world, {friction: 0, restitution: 1}))
+// create a renderer
+const render = Render.create({
+  element: document.body,
+  engine: engine
 })
-// window.addEventListener('mousedown', ({x, y}) = > {
-//   boxes.push(new Box(x, y, myP5.random(10, 40), myP5.random(10, 40), world, {friction: 0, restitution: 1}))
-// })
+console.log(render)
+// create two boxes and a ground
+
+const boxA = Bodies.rectangle(400, 200, 80, 80)
+const boxB = Bodies.rectangle(450, 50, 80, 80)
+const ground = Bodies.rectangle(400, 610, 800, 60, {isStatic: true})
+let w = 20
+const leftWall = Bodies.rectangle(w / 2, canvasHeight / 2, w, canvasHeight, {isStatic: true})
+const rightWall = Bodies.rectangle(canvasWidth - w / 2, canvasHeight / 2, w, canvasHeight, {isStatic: true})
+
+// add all of the bodies to the world
+
+World.add(engine.world, [boxA, boxB, ground, leftWall, rightWall])
+
+// run the engine
+Engine.run(engine)
+
+// run the renderer
+Render.run(render)
