@@ -36,3 +36,10 @@ Engine.run(engine)
 
 // run the renderer
 Render.run(render)
+
+window.addEventListener('click', e => {
+  // debugger
+  const {x, y} = e
+  const circle = Bodies.circle(x, y, 20)
+  World.add(engine.world, circle)
+})
