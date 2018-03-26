@@ -6,8 +6,8 @@ let Engine = Matter.Engine,
   World = Matter.World,
   Bodies = Matter.Bodies
 
-const canvasHeight = 1000
-const canvasWidth = 800
+const canvasH = 1000
+const canvasW = 800
 
 // create an engine
 const engine = Engine.create()
@@ -17,24 +17,24 @@ const render = Render.create({
   element: document.body,
   engine: engine,
   options: {
-    height: canvasHeight,
-    width: canvasWidth
+    height: canvasH,
+    width: canvasW
   }
 })
 
 // Ground
 let groundW = 20
 const ground = Bodies.rectangle(
-  canvasWidth / 2,
-  canvasHeight - groundW / 2,
-  canvasWidth, groundW,
+  canvasW / 2,
+  canvasH - groundW / 2,
+  canvasW, groundW,
   {isStatic: true}
 )
 
 // Walls
 let wallW = 20
-const leftWall = Bodies.rectangle(wallW / 2, canvasHeight / 2, wallW, canvasHeight, {isStatic: true})
-const rightWall = Bodies.rectangle(canvasWidth - wallW / 2, canvasHeight / 2, wallW, canvasHeight, {isStatic: true})
+const leftWall = Bodies.rectangle(wallW / 2, canvasH / 2, wallW, canvasH, {isStatic: true})
+const rightWall = Bodies.rectangle(canvasW - wallW / 2, canvasH / 2, wallW, canvasH, {isStatic: true})
 
 // Spikes
 const step = 80
@@ -42,9 +42,9 @@ const spikeH = 90
 const spikeW = 10
 const spikes = []
 
-for (let i = step; i < canvasWidth; i += step) {
+for (let i = step; i < canvasW; i += step) {
   console.log(i)
-  spikes.push(Bodies.rectangle(i - spikeW / 2, canvasHeight - spikeH / 2 - groundW, spikeW, spikeH, {isStatic: true}))
+  spikes.push(Bodies.rectangle(i - spikeW / 2, canvasH - spikeH / 2 - groundW, spikeW, spikeH, {isStatic: true}))
 }
 
 World.add(engine.world, [ground, leftWall, rightWall, ...spikes])
@@ -67,11 +67,11 @@ const addObstacles = () => {
   const latOffset = 60
   const bottomOffset = 100
   const topOffset = 150
-  for (let j = topOffset; j < canvasHeight - bottomOffset; j += step) {
-    for (let i = step; i < canvasWidth - latOffset + step; i += step) {
+  for (let j = topOffset; j < canvasH - bottomOffset; j += step) {
+    for (let i = step; i < canvasW - latOffset + step; i += step) {
       const isEven = !!((j / step) % 2)
 
-      if (!(isEven && i > canvasWidth - latOffset)) {
+      if (!(isEven && i > canvasW - latOffset)) {
         console.log('BAR')
 
         const circle = Bodies.circle(i + (isEven ? step / 2 : 0)
