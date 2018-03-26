@@ -40,6 +40,22 @@ Render.run(render)
 window.addEventListener('click', e => {
   // debugger
   const {x, y} = e
-  const circle = Bodies.circle(x, y, 20)
+  const circle = Bodies.circle(x, y, 15)
   World.add(engine.world, circle)
 })
+
+const addObstacles = () => {
+  const offset = 20
+  const step = 50
+  for (let i = step; i < canvasWidth; i += step) {
+    for (let j = 100; j < canvasHeight; j += step) {
+
+      const a = ((j / step) % 2)
+      const circle = Bodies.circle(i + a * offset, j, 5, {isStatic: true})
+
+      World.add(engine.world, circle)
+    }
+  }
+}
+
+addObstacles()
