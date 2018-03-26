@@ -18,7 +18,8 @@ const render = Render.create({
   engine: engine,
   options: {
     height: canvasH,
-    width: canvasW
+    width: canvasW,
+    wireframes: false
   }
 })
 
@@ -57,21 +58,30 @@ Render.run(render)
 
 window.addEventListener('click', e => {
   const {x, y} = e
-  const circle = Bodies.circle(x, y, 10, {restitution: 0.8, friction: 0.6})
+  const circle = Bodies.circle(x, y, 13, {
+    restitution: 0.8,
+    friction: 0.6,
+    render: {
+      lineWidth: 3
+    }
+  })
+
+  // debugger
+  // circle.render.fillStyle = 'blue'
   World.add(engine.world, circle)
 })
 
 const addObstacles = () => {
   const offset = 20
   const step = 50
-  const latOffset = 60
+  const latOffset = 30
   const bottomOffset = 100
   const topOffset = 150
   for (let j = topOffset; j < canvasH - bottomOffset; j += step) {
-    for (let i = step; i < canvasW - latOffset + step; i += step) {
+    for (let i = step; i < canvasW; i += step) {
       const isEven = !!((j / step) % 2)
 
-      if (!(isEven && i > canvasW - latOffset)) {
+      if (!(isEven && i > canvasW - 2 * step)) {
         console.log('BAR')
 
         const circle = Bodies.circle(i + (isEven ? step / 2 : 0)
