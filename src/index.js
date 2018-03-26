@@ -6,7 +6,7 @@ let Engine = Matter.Engine,
   World = Matter.World,
   Bodies = Matter.Bodies
 
-const canvasHeight = 800
+const canvasHeight = 1000
 const canvasWidth = 800
 
 // create an engine
@@ -38,7 +38,7 @@ const rightWall = Bodies.rectangle(canvasWidth - wallW / 2, canvasHeight / 2, wa
 
 // Spikes
 const step = 80
-const spikeH = 60
+const spikeH = 90
 const spikeW = 10
 const spikes = []
 
@@ -56,24 +56,35 @@ Engine.run(engine)
 Render.run(render)
 
 window.addEventListener('click', e => {
-  // debugger
   const {x, y} = e
-  const circle = Bodies.circle(x, y, 15)
+  const circle = Bodies.circle(x, y, 10, {restitution: 0.8, friction: 0.6})
   World.add(engine.world, circle)
 })
 
 const addObstacles = () => {
   const offset = 20
   const step = 50
-  for (let i = step; i < canvasWidth; i += step) {
-    for (let j = 100; j < canvasHeight; j += step) {
+  const latOffset = 60
+  const bottomOffset = 100
+  const topOffset = 150
+  for (let j = topOffset; j < canvasHeight - bottomOffset; j += step) {
+    for (let i = step; i < canvasWidth - latOffset + step; i += step) {
+      const isEven = !!((j / step) % 2)
 
-      const a = ((j / step) % 2)
-      const circle = Bodies.circle(i + a * offset, j, 5, {isStatic: true})
+      if (!(isEven && i > canvasWidth - latOffset)) {
+        console.log('BAR')
 
-      World.add(engine.world, circle)
+        const circle = Bodies.circle(i + (isEven ? step / 2 : 0)
+          , j, 5, {
+            isStatic: true
+          })
+
+        World.add(engine.world, circle)
+      }
+
+      // }
     }
   }
 }
 
-// addObstacles()
+addObstacles()
