@@ -1,0 +1,18 @@
+{
+  "name": "plinko",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "poi ./src/index.js",
+    "lint": "standard ./src/**"
+  },
+  "dependencies": {
+    "matter-js": "^0.14.1",
+    "p5": "^0.6.0",
+    "poi": "^9.6.13"
+  },
+  "devDependencies": {
+    "standard": "^11.0.1"
+  }
+}
